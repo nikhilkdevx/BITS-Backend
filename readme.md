@@ -1,164 +1,144 @@
 # BITS Backend
 
-A RESTful backend API for a course management system built with Node.js, Express, MongoDB, and JWT-based authentication.
+A role-based backend API built with **Node.js, Express, and MongoDB** for managing users, courses, and course enrollments.
 
-The project focuses on backend fundamentals such as authentication, role-based authorization, middleware design, protected routes, validation, and MongoDB data management.
+The project focuses on **JWT authentication, role-based authorization, ownership-based access control, and secure API design**.
 
----
+## Features
 
-## 🚀 Features
-
-- JWT-based user authentication
-- Secure login system
+- JWT-based authentication
 - Role-based authorization
-  - Student
-  - Professor
-  - Admin
-- Protected API routes
-- Ownership-based authorization
-- Course enrollment management
-- Admin-controlled course operations
-- User management
-- MongoDB database integration
-- Request validation
+- Ownership-based access control
+- Course creation and management
+- Course enrollment and de-enrollment
+- MongoDB data persistence
 - Centralized error handling
-- MVC-style project structure
-- Environment-based configuration
 
----
+## Authentication
 
-## 🛠️ Tech Stack
+- User registration and login
+- Password hashing with **bcrypt**
+- JWT-based authentication
+- Protected routes using authentication middleware
+
+## Authorization
+
+- Role-based access control for **Student, Professor, and Admin**
+- Protected routes based on user roles
+- Ownership checks for user-specific actions
+- Admin-only operations for privileged actions
+
+## Ownership-Based Access Control
+
+- Users can modify or access only their own resources.
+- Admins can perform privileged actions across resources.
+- Ownership checks are enforced through reusable middleware.
+
+## Course Enrollment
+
+- Students can enroll themselves in courses.
+- Students can only modify their own enrollments.
+- Admins can manage course enrollments.
+- Enrollment access is protected through authentication and authorization middleware.
+
+## Middleware Architecture
+
+- Reusable middleware for authentication and authorization
+- Role-based access control through `allowRoles`
+- Ownership validation through dedicated middleware
+- Centralized error-handling middleware
+
+## API Request Flow
+
+Client → Express Server → Middleware → Route → Controller → MongoDB → Response
+
+- Authentication and authorization are handled through middleware.
+- Controllers handle business logic and database operations.
+- Errors are handled by centralized error-handling middleware.
+
+## Database & Data Models
+
+- MongoDB is used for persistent data storage.
+- Mongoose is used for schema definition and database operations.
+- Core data models include **Users, Courses, and Enrollments**.
+
+## API Endpoints
+
+- User authentication and account management
+- User profile operations
+- Course creation and management
+- Course enrollment and de-enrollment
+- Protected endpoints based on role and ownership
+
+## Error Handling
+
+- Centralized error-handling middleware
+- Custom `ExpressError` for consistent API errors
+- Validation and database errors are handled through the same error flow
+
+## Tech Stack
 
 - **Node.js**
 - **Express.js**
 - **MongoDB**
 - **Mongoose**
-- **JWT (JSON Web Tokens)**
+- **JWT**
 - **bcrypt**
 - **Joi**
-- **dotenv**
 
----
+## Project Structure
 
-## 📁 Project Structure
+- `routes/` — API route definitions
+- `controllers/` — Business logic
+- `models/` — Mongoose schemas
+- `middleware/` — Authentication, authorization, and validation
+- `app.js` — Application entry point
 
-```text
-BITS-Backend/
-│
-├── Models/
-│   ├── User.js
-│   └── Course.js
-│
-├── controllers/
-│   ├── authController.js
-│   ├── userController.js
-│   └── courseController.js
-│
-├── middlewares/
-│   ├── verifyJWT.js
-│   ├── allowRoles.js
-│   ├── isOwnerOrAdmin.js
-│   └── isOwner.js
-│
-├── routes/
-│   ├── authRoutes.js
-│   ├── userRoutes.js
-│   └── courseRoutes.js
-│
-├── utils/
-│   └── ExpressError.js
-│
-├── validators/
-│   ├── ...
-│
-├── app.js
-├── package.json
-├── package-lock.json
-└── .gitignore
+## Environment Variables
 
----
+Create a `.env` file in the project root:
 
-## 🗄️ Database
+```env
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+PORT=6000
+```
 
-This project uses **MongoDB** as the database and **Mongoose** as the ODM.
+## Installation & Local Setup
 
-The backend uses Mongoose schemas and models to structure and manage application data.
+```bash
+git clone https://github.com/nikhildevx/BITS-Backend.git
+cd BITS-Backend
+npm install
+npm start
+```
 
-### Main Models
+## API Testing
 
-#### User
+The API can be tested using **Postman**.
 
-The `User` model represents users of the system.
+Test the main authentication, user, course, enrollment, authorization, and ownership flows to verify the API behavior.
 
-A user contains information such as:
+## Security
 
-- Name
-- Email
-- Password
-- Role
-- Enrolled courses
+- Passwords are securely hashed using **bcrypt**.
+- JWTs are used to protect authenticated routes.
+- Role and ownership checks prevent unauthorized access.
+- Sensitive environment variables are excluded from version control.
 
-Users can have one of the following roles:
+## Project Goals
 
-- `student`
-- `professor`
-- `admin`
+This project demonstrates practical backend development concepts including:
 
-#### Course
+- RESTful API development
+- Authentication and authorization
+- Role-based access control
+- Ownership-based security
+- Database integration
+- Middleware-based architecture
 
-The `Course` model represents courses available in the system.
+## Author
 
-Courses are associated with professors and enrolled students.
+**Nikhil Kumar**
 
----
-
-## 🔄 API Request Flow
-
-A protected request generally follows this flow:
-
-```text
-Client
-  ↓
-Express Router
-  ↓
-Authentication Middleware
-  ↓
-Authorization Middleware
-  ↓
-Request Validation
-  ↓
-Controller
-  ↓
-Mongoose
-  ↓
-MongoDB
-  ↓
-Response
-
----
-
-## 🎓 Course Enrollment
-
-Students can enroll themselves in courses through a protected endpoint.
-
-The enrollment route uses both JWT authentication and an ownership check to ensure that a student can only enroll **themselves**.
-
-### Enrollment Flow
-
-```text
-Student sends request
-        ↓
-JWT verification
-        ↓
-Identify authenticated user
-        ↓
-Ownership check
-        ↓
-Does authenticated user ID match the requested user ID?
-        ↓
-      YES
-        ↓
-Controller
-        ↓
-Enroll student in course
-
+Backend developer focused on building secure and scalable web applications.
