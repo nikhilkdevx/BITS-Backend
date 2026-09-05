@@ -1,3 +1,7 @@
+## Live API
+
+[https://bits-backend-mq00.onrender.com](https://bits-backend-mq00.onrender.com)
+
 # BITS Backend
 
 A role-based backend API built with **Node.js, Express, and MongoDB** for managing users, courses, and course enrollments.
