@@ -21,10 +21,6 @@ main()
     console.log("connected to MongoDB"))
 .catch(err=>console.log(err));
 
-const Course = require("./Models/courses");
-const User = require("./Models/user");
-const ExpressError = require("./utils/ExpressError");
-
 const authRoutes = require("./routes/authRoutes");
 app.use("/auth",authRoutes);
 
@@ -33,6 +29,13 @@ app.use("/user",userRoutes);
 
 const courseRoute = require("./routes/courseRoutes");
 app.use("/course",courseRoute);
+
+app.get("/",(req,res)=>{
+    res.json({
+        message : "BITS BACKEND IS RUNNING",
+        documentation : "See the GitHub repository for API details."
+    });
+});
 
 // Global Error Handler
 app.use((err,req,res,next)=>{
